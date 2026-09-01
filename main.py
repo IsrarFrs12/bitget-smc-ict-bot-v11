@@ -1,3 +1,4 @@
+from services.telegram_notifier import telegram
 # V6 explainable reporting module
 try:
     from decision_reporter import ExplainableReporter, CoinDecision
@@ -561,6 +562,7 @@ def main():
         risk = RiskManager()
         watchlist = Watchlist()
         print("[BOOT] Initialization complete. Starting scan loop.")
+        telegram.send_startup("DEMO" if Config.DEMO_MODE else "REAL")
     except KeyboardInterrupt:
         print("Stopped.")
         return

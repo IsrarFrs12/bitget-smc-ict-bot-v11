@@ -54,6 +54,10 @@ class TelegramNotifier:
             logger.error("Telegram notification failed: %s", exc)
             return False
 
+    def send_startup(self, mode="DEMO"):
+        message = "V11 Trading Bot - Telegram Connected - Mode: " + mode + " - Status: ONLINE"
+        return self.send_message(message)
+
     def send_test(self):
         return self.send_message(
             "V11 Trading Bot\n\n"
