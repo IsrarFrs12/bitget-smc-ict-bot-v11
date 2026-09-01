@@ -36,7 +36,7 @@ class TelegramNotifier:
                     "chat_id": self.chat_id,
                     "text": message,
                 },
-                timeout=10,
+                timeout=15,
             )
 
             if response.ok:
@@ -55,7 +55,12 @@ class TelegramNotifier:
             return False
 
     def send_startup(self, mode="DEMO"):
-        message = "V11 Trading Bot - Telegram Connected - Mode: " + mode + " - Status: ONLINE"
+        message = (
+            "V11 Trading Bot\n\n"
+            "Telegram Connected\n"
+            f"Mode: {mode}\n"
+            "Status: ONLINE"
+        )
         return self.send_message(message)
 
     def send_test(self):
@@ -66,6 +71,77 @@ class TelegramNotifier:
             "Status: ONLINE\n"
             "Mode: DEMO"
         )
+
+    def send_scan_summary(
+        self,
+        cycle_no,
+        scanned,
+        longs,
+        shorts,
+        neutral,
+        watching,
+        setup_ready,
+        entry_ready,
+        executed,
+        rejected,
+    ):
+        message = (
+            f"V11 SCAN #{cycle_no}\n\n"
+            f"Scanned: {scanned}\n"
+            f"LONG: {longs} | SHORT: {shorts} | NEUTRAL: {neutral}\n"
+            f"Watching: {watching}\n"
+            f"Setup-ready: {setup_ready}\n"
+            f"Entry-ready: {entry_ready}\n"
+            f"Executed: {executed}\n"
+            f"Rejected: {rejected}"
+        )
+        return self.send_message(message)
+
+    def send_setup_ready(
+        self,
+        symbol,
+        side,
+        entry,
+        sl,
+        tp,
+        rr,
+        confluence,
+        reason,
+    ):
+        message = (
+            "V11 SETUP READY\n\n"
+            f"Symbol: {symbol}\n"
+            f"Side: {side.upper()}\n"
+            f"Entry: {entry}\n"
+            f"SL: {sl}\n"
+            f"TP: {tp}\n"
+            f"RR: {rr:.2f}\n"
+            f"Confluence: {confluence}\n\n"
+            f"Reason: {reason}"
+        )
+        return self.send_message(message)
+
+    def send_execution(
+        self,
+        symbol,
+        side,
+        entry,
+        sl,
+        tp,
+        status,
+        order_id=None,
+    ):
+        message = (
+            "V11 EXECUTION\n\n"
+            f"Symbol: {symbol}\n"
+            f"Side: {side.upper()}\n"
+            f"Entry: {entry}\n"
+            f"SL: {sl}\n"
+            f"TP: {tp}\n"
+            f"Status: {status}\n"
+            f"Order ID: {order_id or 'N/A'}"
+        )
+        return self.send_message(message)
 
 
 telegram = TelegramNotifier()
